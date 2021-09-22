@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
-import NestedMenuItem from "material-ui-nested-menu-item";
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
+import Drawer from '@mui/material/Drawer';
 import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import { useMediaQuery, Grid, MenuItem } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
 import CountryDetail from "components/CountryDetail";
 
+const useStyles = makeStyles((theme) => ({
+  drawerStyle: {
+    backgroundColor: '#222',
+    color: '#ddd'
+  },
+}));
 export default function SideBar() {
+  const classes = useStyles();
+
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
       //setCountries(response.data);
@@ -28,6 +38,7 @@ export default function SideBar() {
   }, []);
   
   const [countries, setCountries] = useState([]);
+  const [countriesInAlphabet, setCountriesInAlphabet] = useState(-1);
   const [countryDetail, setCountryDetail] = useState(null);
   const [detailShow, setDetailShow] = useState(false);
 
@@ -42,6 +53,10 @@ export default function SideBar() {
     setDetailShow(true);
   };
 
+  const handleAlphabetClick = (e, index) => {
+    setCountriesInAlphabet(index);
+  }
+
   const alphabets = () => {
     let result = [];
     let chAlpha = 65;
@@ -51,40 +66,32 @@ export default function SideBar() {
   return (
     <div>
       {
-        !detailShow && <Grid
-          container
-          justify="space-between"
-          spacing={2}
-          direction={'row'}
-        >
-          <Grid
-            item
-            container
-            alignItems="center"
-            xs={12}
-            md={3}
-            data-aos={'fade-up'}
-          >
-            <List>
-              {alphabets().map((text, index) => (
-                <ListItem button key={text}>
-                  <NestedMenuItem
-                    label={text}
-                    name = "mainButton"
-                    parentMenuOpen={true}
-                    rightIcon={null}
+        !detailShow && 
+        <div>
+          <Drawer
+            anchor = "left"
+            open = {true}
+            variant="permanent"
+            >
+              <List  className = {classes.drawerStyle}>
+                {alphabets().map((text, index) => (
+                  <ListItem button key={text} onClick={e => handleAlphabetClick(e, index)} value={text} 
                   >
-                  {
-                    countries.length > 0 && countries[index].map((data, id) => (
-                      <MenuItem onClick={e => handleItemClick(e, index, id)}>{data.name}</MenuItem>
-                    ))
-                  }
-                  </NestedMenuItem>
+                    <ListItemText primary={text}/>
+                  </ListItem>
+                ))}
+              </List>
+          </Drawer>
+          <List style={{marginLeft: '100px', cursor: 'pointer'}}>
+            {
+              countriesInAlphabet >=0 && countries[countriesInAlphabet].map((data, id) => (
+                <ListItem key={id}>
+                  <ListItemText primary={data.name} onClick={e => handleItemClick(e, countriesInAlphabet, id)}/>
                 </ListItem>
-              ))}
-            </List>
-          </Grid>
-        </Grid>
+              ))
+            }
+          </List>
+        </div>
       }
       {
           detailShow && 

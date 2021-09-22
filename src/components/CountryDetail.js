@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '20px'
   },
   cardContainer: {
-    backgroundColor: "#ddd",
+    backgroundColor: "#ddd !important",
     padding: '30px'
   }
 }));
@@ -50,7 +50,7 @@ export default function CountryDetail({ detail, toggle }) {
                 <Typography variant="h3">
                     {detail.name}
                 </Typography>
-                <Table striped>
+                <Table>
                     <tr>
                     <td>Capital</td>
                     <td>{detail.capital}</td>
