@@ -1,6 +1,6 @@
 
 import { createReducer } from "@reduxjs/toolkit";
-import { INCREMENT } from './actions'
+import { INCREMENT } from 'actions'
 
 const reducer = createReducer({ count: 0 }, {
   [INCREMENT] : (state = { count: 0 }, action) => {

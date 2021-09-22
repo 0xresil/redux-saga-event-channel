@@ -1,8 +1,8 @@
 
 import SideBar from 'components/SideBar.js'
 import Counter from 'components/Counter.js'
-import store from 'state/store.js'
-import { INCREMENT, INCREMENT_ASYNC } from 'state/actions.js'
+import store from 'store/index.js'
+import { INCREMENT, INCREMENT_ASYNC } from 'actions'
 function App() {
   return (
     <div>
