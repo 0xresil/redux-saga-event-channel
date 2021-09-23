@@ -5240,7 +5240,7 @@
   "resolved" "https://registry.npmjs.org/etag/-/etag-1.8.1.tgz"
   "version" "1.8.1"
 
-"eventemitter3@^4.0.0":
+"eventemitter3@^4.0.0", "eventemitter3@^4.0.7":
   "integrity" "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw=="
   "resolved" "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz"
   "version" "4.0.7"
@@ -9898,6 +9898,11 @@
   dependencies:
     "loose-envify" "^1.1.0"
     "object-assign" "^4.1.1"
+
+"reactjs-eventemitter@^1.0.6":
+  "integrity" "sha512-jAqLwYarghnLARdISO0C6nph5PQxJxGW4bvGnmPC1qN7KABI/ZbAObVaxniNv7tHiBrn1aw1iPwFkyjOM2eoQw=="
+  "resolved" "https://registry.npmjs.org/reactjs-eventemitter/-/reactjs-eventemitter-1.0.6.tgz"
+  "version" "1.0.6"
 
 "read-pkg-up@^2.0.0":
   "integrity" "sha1-a3KoBImE4MQeeVEP1en6mbO1Sb4="

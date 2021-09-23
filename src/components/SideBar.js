@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-
+import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Drawer from '@mui/material/Drawer';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { useMediaQuery, Grid, MenuItem } from '@material-ui/core';
+import { useMediaQuery, Typography } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
@@ -14,30 +14,12 @@ import CountryDetail from "components/CountryDetail";
 const useStyles = makeStyles((theme) => ({
   drawerStyle: {
     backgroundColor: '#222',
-    color: '#ddd'
+    color: '#ddd',
   },
 }));
-export default function SideBar() {
+const SideBar = ({ countries }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    axios.get("https://restcountries.eu/rest/v2/all").then((response) => {
-      //setCountries(response.data);
-      console.log("countries=", response.data);
-      
-      const countries = [];
-      alphabets().forEach((text, index) => {
-        countries[index] = [];
-        response.data.forEach((data) => {
-          if (data.name.at(0) == text.at(0)) countries[index].push(data);
-        })
-      })
-      console.log(countries.length);
-      setCountries(countries);
-    });
-  }, []);
   
-  const [countries, setCountries] = useState([]);
   const [countriesInAlphabet, setCountriesInAlphabet] = useState(-1);
   const [countryDetail, setCountryDetail] = useState(null);
   const [detailShow, setDetailShow] = useState(false);
@@ -47,8 +29,6 @@ export default function SideBar() {
   }
 
   const handleItemClick = (event, index, id) => {
-    console.log(countries[index][id]);
-    //setMenuPosition(null);
     setCountryDetail(countries[index][id]);
     setDetailShow(true);
   };
@@ -57,11 +37,8 @@ export default function SideBar() {
     setCountriesInAlphabet(index);
   }
 
-  const alphabets = () => {
-    let result = [];
-    let chAlpha = 65;
-    while (chAlpha <= 'Z'.charCodeAt(0)) { result.push(String.fromCharCode(chAlpha ++)); }
-    return result;
+  const alphabet = (index) => {
+    return String.fromCharCode('A'.charCodeAt(0) + index);
   }
   return (
     <div>
@@ -72,12 +49,13 @@ export default function SideBar() {
             anchor = "left"
             open = {true}
             variant="permanent"
+            style={{width: '100px'}}
             >
               <List  className = {classes.drawerStyle}>
-                {alphabets().map((text, index) => (
-                  <ListItem button key={text} onClick={e => handleAlphabetClick(e, index)} value={text} 
+                {countries.map((data, index) => (
+                  <ListItem button key={index} onClick={e => handleAlphabetClick(e, index)}
                   >
-                    <ListItemText primary={text}/>
+                    <ListItemText primary={alphabet(index)}/>
                   </ListItem>
                 ))}
               </List>
@@ -91,6 +69,7 @@ export default function SideBar() {
               ))
             }
           </List>
+          <Typography variant="h6" align="center">Loading...</Typography>
         </div>
       }
       {
@@ -101,3 +80,7 @@ export default function SideBar() {
     </div>
   );
 }
+const mapStateToProps = (state) => (
+  { countries: state.countries }
+)
+export default connect(mapStateToProps)(SideBar);

@@ -1,11 +1,18 @@
 
 import { createReducer } from "@reduxjs/toolkit";
-import { INCREMENT } from 'actions'
+import { PUT_COUNTRIES } from 'actions'
 
-const reducer = createReducer({ count: 0 }, {
-  [INCREMENT] : (state = { count: 0 }, action) => {
-    return { count: state.count + 1 };
+const rootReducer = createReducer({ countries: [] }, {
+  [PUT_COUNTRIES] : (state = { countries: [] }, action) => {
+        console.log("state =", state.countries.length);
+        let countries = state.countries;
+        if (countries[action.payload.alphabet] === undefined 
+            || countries[action.payload.alphabet].length === 0 ) {
+            countries[action.payload.alphabet] = action.payload.countries;
+        }
+        state.countries = countries;
+        return state;
   }
 });
 
-export default reducer;
+export default rootReducer;
