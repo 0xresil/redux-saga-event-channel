@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Drawer from '@mui/material/Drawer';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { useMediaQuery, Typography } from '@material-ui/core';
+import { useMediaQuery, Typography, Input } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 
 import CountryDetail from "components/CountryDetail";
-
+import { SearchContext } from 'contexts/SearchContext';
 const useStyles = makeStyles((theme) => ({
   drawerStyle: {
     backgroundColor: '#222',
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const SideBar = ({ countries }) => {
   const classes = useStyles();
   
+  const searchTerm = useContext(SearchContext);
   const [countriesInAlphabet, setCountriesInAlphabet] = useState(-1);
   const [countryDetail, setCountryDetail] = useState(null);
   const [detailShow, setDetailShow] = useState(false);
@@ -32,6 +33,10 @@ const SideBar = ({ countries }) => {
     setCountryDetail(countries[index][id]);
     setDetailShow(true);
   };
+
+  const handleSearchTerm = (e) => {
+    searchTerm[1](e.target.value);
+  }
 
   const handleAlphabetClick = (e, index) => {
     setCountriesInAlphabet(index);
@@ -69,7 +74,8 @@ const SideBar = ({ countries }) => {
               ))
             }
           </List>
-          <Typography variant="h6" align="center">Loading...</Typography>
+          <Input name="searchTerm" onChange={e=> handleSearchTerm(e)}></Input>
+          <Typography variant="h6" align="center">{`Loading... ${searchTerm[0]}`}</Typography>
         </div>
       }
       {
